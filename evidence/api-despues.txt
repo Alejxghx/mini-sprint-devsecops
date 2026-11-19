@@ -1,0 +1,5 @@
+Credencial incorrecta => 401 {'error': 'Credenciales inválidas'}
+Inyeccion SQL => 401 {'error': 'Credenciales inválidas'}
+Credencial valida de laboratorio => 200 {'message': 'Login correcto', 'user': {'id': 1, 'username': 'admin'}}
+GET /api/profile sin clave => 401
+GET /api/profile con clave de entorno => 200

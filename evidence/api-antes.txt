@@ -1,0 +1,2 @@
+POST /api/login {'username': 'admin', 'password': 'incorrecta'} => 401 {'error': 'Credenciales inválidas'}
+POST /api/login {'username': "' OR 1=1 -- ", 'password': 'incorrecta'} => 200 {'message': 'Login correcto', 'user': {'id': 1, 'username': 'admin'}}
