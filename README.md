@@ -11,7 +11,7 @@ Práctica de Ciclos de Desarrollo de Software Seguro con la API Flask suministra
 
 ## Tablero ágil
 
-Ver [TABLERO.md](TABLERO.md). Cada historia enlaza a su issue y se cierra cuando la corrección y sus verificaciones están listas.
+Ver el [tablero en GitHub Projects](https://github.com/users/Alejxghx/projects/2/views/2) y el resumen en [TABLERO.md](TABLERO.md). Cada historia enlaza a su issue y se cierra cuando la corrección y sus verificaciones están listas.
 
 ## Evidencias
 

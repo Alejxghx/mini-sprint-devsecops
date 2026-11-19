@@ -1,5 +1,7 @@
 # Tablero del mini sprint
 
+[Tablero real en GitHub Projects](https://github.com/users/Alejxghx/projects/2/views/2)
+
 Objetivo: corregir los riesgos de la API heredada y verificar los controles DevSecOps.
 
 | Historia | Prioridad | Estado | Criterio de aceptación |
