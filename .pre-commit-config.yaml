@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: detect-secrets
+        name: Detect secrets
+        entry: detect-secrets-hook --no-verify
+        language: system
+        types: [text]
+        exclude: '^evidence/'
