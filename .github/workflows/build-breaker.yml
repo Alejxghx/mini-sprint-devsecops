@@ -1,0 +1,62 @@
+name: Build Breaker
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  sast:
+    name: SAST Bandit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install bandit==1.9.4
+      - run: bandit -r app.py -f txt
+  sca:
+    name: SCA pip-audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pip-audit==2.10.1 cyclonedx-bom==8.0.1
+      - name: Inventario CycloneDX
+        run: cyclonedx-py requirements requirements.txt --output-file sbom.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sbom-cyclonedx
+          path: sbom.json
+      - run: pip-audit -r requirements.txt --strict
+  tests:
+    name: Pruebas funcionales
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt pytest
+      - run: |
+          if [ -f tests/test_api.py ]; then
+            python -m pytest -q
+          else
+            echo 'Escenario inicial sin pruebas de regresion'
+          fi
+  build-breaker:
+    name: Build Breaker
+    if: always()
+    needs: [sast, sca, tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar controles obligatorios
+        env:
+          SAST: ${{ needs.sast.result }}
+          SCA: ${{ needs.sca.result }}
+          TESTS: ${{ needs.tests.result }}
+        run: test "$SAST" = success && test "$SCA" = success && test "$TESTS" = success
